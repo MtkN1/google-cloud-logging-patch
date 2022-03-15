@@ -15,6 +15,7 @@
 """Common logging helpers."""
 
 import logging
+import os
 
 from datetime import datetime
 from datetime import timedelta
@@ -110,7 +111,7 @@ def retrieve_metadata_server(metadata_key, timeout=5):
         response = requests.get(url, headers=METADATA_HEADERS, timeout=timeout)
 
         if response.status_code == requests.codes.ok:
-            return response.text
+            return os.path.basename(response.text)
 
     except requests.exceptions.RequestException:
         # Ignore the exception, connection failed means the attribute does not
