@@ -66,6 +66,7 @@ s.move(templated_files,
         ".coveragerc", 
         "docs/multiprocessing.rst",
         ".github/workflows", # exclude gh actions as credentials are needed for tests
+        ".github/auto-label.yaml",
         ])
 
 # adjust .trampolinerc for environment tests
@@ -102,6 +103,8 @@ s.replace(
 # --------------------------------------------------------------------------
 
 python.py_samples()
+
+python.configure_previous_major_version_branches()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 

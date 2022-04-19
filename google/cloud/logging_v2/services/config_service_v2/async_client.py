@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -318,12 +318,20 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListBucketsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -391,7 +399,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -407,7 +420,6 @@ class ConfigServiceV2AsyncClient:
         r"""Creates a log bucket that can be used to store log
         entries. After a bucket has been created, the bucket's
         location cannot be changed.
-
 
         .. code-block:: python
 
@@ -462,7 +474,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -487,7 +504,6 @@ class ConfigServiceV2AsyncClient:
 
         After a bucket has been created, the bucket's location cannot be
         changed.
-
 
         .. code-block:: python
 
@@ -541,7 +557,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -560,7 +581,6 @@ class ConfigServiceV2AsyncClient:
         ``DELETE_REQUESTED`` state. After 7 days, the bucket will be
         purged and all log entries in the bucket will be permanently
         deleted.
-
 
         .. code-block:: python
 
@@ -606,7 +626,10 @@ class ConfigServiceV2AsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def undelete_bucket(
@@ -620,7 +643,6 @@ class ConfigServiceV2AsyncClient:
         r"""Undeletes a log bucket. A bucket that has been
         deleted can be undeleted within the grace period of 7
         days.
-
 
         .. code-block:: python
 
@@ -666,7 +688,10 @@ class ConfigServiceV2AsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def list_views(
@@ -759,12 +784,20 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListViewsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -832,7 +865,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -847,7 +885,6 @@ class ConfigServiceV2AsyncClient:
     ) -> logging_config.LogView:
         r"""Creates a view over log entries in a log bucket. A
         bucket may contain a maximum of 30 views.
-
 
         .. code-block:: python
 
@@ -902,7 +939,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -920,7 +962,6 @@ class ConfigServiceV2AsyncClient:
         view: ``filter``. If an ``UNAVAILABLE`` error is returned, this
         indicates that system is not in a state where it can update the
         view. If this occurs, please try again in a few minutes.
-
 
         .. code-block:: python
 
@@ -974,7 +1015,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -991,7 +1037,6 @@ class ConfigServiceV2AsyncClient:
         returned, this indicates that system is not in a state where it
         can delete the view. If this occurs, please try again in a few
         minutes.
-
 
         .. code-block:: python
 
@@ -1037,7 +1082,10 @@ class ConfigServiceV2AsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def list_sinks(
@@ -1145,12 +1193,20 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListSinksAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1270,7 +1326,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1290,7 +1351,6 @@ class ConfigServiceV2AsyncClient:
         immediately, unless the sink's ``writer_identity`` is not
         permitted to write to the destination. A sink can export log
         entries only from the resource owning the sink.
-
 
         .. code-block:: python
 
@@ -1396,7 +1456,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1418,7 +1483,6 @@ class ConfigServiceV2AsyncClient:
 
         The updated sink might also have a new ``writer_identity``; see
         the ``unique_writer_identity`` field.
-
 
         .. code-block:: python
 
@@ -1562,7 +1626,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1578,7 +1647,6 @@ class ConfigServiceV2AsyncClient:
     ) -> None:
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
-
 
         .. code-block:: python
 
@@ -1669,7 +1737,10 @@ class ConfigServiceV2AsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def list_exclusions(
@@ -1683,7 +1754,6 @@ class ConfigServiceV2AsyncClient:
     ) -> pagers.ListExclusionsAsyncPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
-
 
         .. code-block:: python
 
@@ -1779,12 +1849,20 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListExclusionsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1900,7 +1978,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1918,7 +2001,6 @@ class ConfigServiceV2AsyncClient:
         r"""Creates a new exclusion in the \_Default sink in a specified
         parent resource. Only log entries belonging to that resource can
         be excluded. You can have up to 10 exclusions in a resource.
-
 
         .. code-block:: python
 
@@ -2025,7 +2107,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2043,7 +2130,6 @@ class ConfigServiceV2AsyncClient:
     ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing exclusion in the
         \_Default sink.
-
 
         .. code-block:: python
 
@@ -2164,7 +2250,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2267,7 +2358,10 @@ class ConfigServiceV2AsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def get_cmek_settings(
@@ -2288,7 +2382,6 @@ class ConfigServiceV2AsyncClient:
         See `Enabling CMEK for Log
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
-
 
         .. code-block:: python
 
@@ -2356,7 +2449,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2384,7 +2482,6 @@ class ConfigServiceV2AsyncClient:
         See `Enabling CMEK for Log
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
-
 
         .. code-block:: python
 
@@ -2452,7 +2549,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2477,7 +2579,6 @@ class ConfigServiceV2AsyncClient:
         See `Enabling CMEK for Log
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
-
 
         .. code-block:: python
 
@@ -2574,7 +2675,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2607,7 +2713,6 @@ class ConfigServiceV2AsyncClient:
         See `Enabling CMEK for Log
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
-
 
         .. code-block:: python
 
@@ -2706,7 +2811,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2721,7 +2831,6 @@ class ConfigServiceV2AsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Copies a set of log entries from a log bucket to a
         Cloud Storage bucket.
-
 
         .. code-block:: python
 
@@ -2778,7 +2887,12 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -2800,7 +2914,9 @@ class ConfigServiceV2AsyncClient:
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-logging",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-logging",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

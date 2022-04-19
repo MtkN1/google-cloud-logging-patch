@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -57,7 +67,10 @@ class LoggingServiceV2ClientMeta(type):
     _transport_registry["grpc"] = LoggingServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = LoggingServiceV2GrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[LoggingServiceV2Transport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[LoggingServiceV2Transport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -162,9 +175,15 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return self._transport
 
     @staticmethod
-    def log_path(project: str, log: str,) -> str:
+    def log_path(
+        project: str,
+        log: str,
+    ) -> str:
         """Returns a fully-qualified log string."""
-        return "projects/{project}/logs/{log}".format(project=project, log=log,)
+        return "projects/{project}/logs/{log}".format(
+            project=project,
+            log=log,
+        )
 
     @staticmethod
     def parse_log_path(path: str) -> Dict[str, str]:
@@ -173,7 +192,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -186,9 +207,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -197,9 +222,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -208,9 +237,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -219,10 +252,14 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -411,7 +448,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         deleted. Entries received after the delete operation with a
         timestamp before the operation will be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -488,7 +524,10 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def write_log_entries(
@@ -497,7 +536,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         *,
         log_name: str = None,
         resource: monitored_resource_pb2.MonitoredResource = None,
-        labels: Sequence[logging.WriteLogEntriesRequest.LabelsEntry] = None,
+        labels: Mapping[str, str] = None,
         entries: Sequence[log_entry.LogEntry] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -510,7 +549,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Logging. A single request may contain log entries for a
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
-
 
         .. code-block:: python
 
@@ -579,7 +617,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]):
+            labels (Mapping[str, str]):
                 Optional. Default labels that are added to the
                 ``labels`` field of all log entries in ``entries``. If a
                 log entry already has a label with the same key as a
@@ -665,7 +703,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.write_log_entries]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -685,7 +728,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         originated from a project/folder/organization/billing account.
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
-
 
         .. code-block:: python
 
@@ -803,12 +845,20 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_log_entries]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListLogEntriesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -824,7 +874,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
     ) -> pagers.ListMonitoredResourceDescriptorsPager:
         r"""Lists the descriptors for monitored resource types
         used by Logging.
-
 
         .. code-block:: python
 
@@ -879,12 +928,20 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListMonitoredResourceDescriptorsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -902,7 +959,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
         listed.
-
 
         .. code-block:: python
 
@@ -984,12 +1040,20 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListLogsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1006,7 +1070,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
-
 
         .. code-block:: python
 
@@ -1057,7 +1120,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.tail_log_entries]
 
         # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            requests,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1078,7 +1146,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-logging",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-logging",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

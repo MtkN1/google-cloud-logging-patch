@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -229,7 +230,6 @@ class LoggingServiceV2AsyncClient:
         deleted. Entries received after the delete operation with a
         timestamp before the operation will be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -317,7 +317,10 @@ class LoggingServiceV2AsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def write_log_entries(
@@ -326,7 +329,7 @@ class LoggingServiceV2AsyncClient:
         *,
         log_name: str = None,
         resource: monitored_resource_pb2.MonitoredResource = None,
-        labels: Sequence[logging.WriteLogEntriesRequest.LabelsEntry] = None,
+        labels: Mapping[str, str] = None,
         entries: Sequence[log_entry.LogEntry] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -339,7 +342,6 @@ class LoggingServiceV2AsyncClient:
         Logging. A single request may contain log entries for a
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
-
 
         .. code-block:: python
 
@@ -408,7 +410,7 @@ class LoggingServiceV2AsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (:class:`Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]`):
+            labels (:class:`Mapping[str, str]`):
                 Optional. Default labels that are added to the
                 ``labels`` field of all log entries in ``entries``. If a
                 log entry already has a label with the same key as a
@@ -506,7 +508,12 @@ class LoggingServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -526,7 +533,6 @@ class LoggingServiceV2AsyncClient:
         originated from a project/folder/organization/billing account.
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
-
 
         .. code-block:: python
 
@@ -655,12 +661,20 @@ class LoggingServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListLogEntriesAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -676,7 +690,6 @@ class LoggingServiceV2AsyncClient:
     ) -> pagers.ListMonitoredResourceDescriptorsAsyncPager:
         r"""Lists the descriptors for monitored resource types
         used by Logging.
-
 
         .. code-block:: python
 
@@ -739,12 +752,20 @@ class LoggingServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListMonitoredResourceDescriptorsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -762,7 +783,6 @@ class LoggingServiceV2AsyncClient:
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
         listed.
-
 
         .. code-block:: python
 
@@ -855,12 +875,20 @@ class LoggingServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListLogsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -877,7 +905,6 @@ class LoggingServiceV2AsyncClient:
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
-
 
         .. code-block:: python
 
@@ -943,7 +970,12 @@ class LoggingServiceV2AsyncClient:
         )
 
         # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            requests,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -957,7 +989,9 @@ class LoggingServiceV2AsyncClient:
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-logging",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-logging",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
