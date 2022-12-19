@@ -4,6 +4,123 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.3.1](https://github.com/googleapis/python-logging/compare/v3.3.0...v3.3.1) (2022-12-05)
+
+
+### Bug Fixes
+
+* Client_info default values ([#681](https://github.com/googleapis/python-logging/issues/681)) ([b74d2a8](https://github.com/googleapis/python-logging/commit/b74d2a8c4f34aece5dc851de0e7542b3229751ba))
+
+## [3.3.0](https://github.com/googleapis/python-logging/compare/v3.2.4...v3.3.0) (2022-11-26)
+
+
+### Features
+
+* Add support to custom JSON encoders ([#657](https://github.com/googleapis/python-logging/issues/657)) ([77e621c](https://github.com/googleapis/python-logging/commit/77e621cb85b726a801227da85c31319f25969d19))
+* Include context on batch log errors ([#650](https://github.com/googleapis/python-logging/issues/650)) ([d08be9a](https://github.com/googleapis/python-logging/commit/d08be9ae26c70f94e4a264e2bc518dd8a8dbae91))
+* Set partial_success to default to true for batched logs ([#649](https://github.com/googleapis/python-logging/issues/649)) ([e56d3e8](https://github.com/googleapis/python-logging/commit/e56d3e83859e20fbbd9cd22d3275ff123f79d6c9))
+* Support Django asgi middleware ([#625](https://github.com/googleapis/python-logging/issues/625)) ([f52b3aa](https://github.com/googleapis/python-logging/commit/f52b3aae28e7ed5809fc5470213b2a1c6f7d77bd))
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#644](https://github.com/googleapis/python-logging/issues/644)) ([12f3001](https://github.com/googleapis/python-logging/commit/12f3001d834e858dbbbcdaab5894ec25a14c6820))
+* Json fields dictionary has modification side effect ([#654](https://github.com/googleapis/python-logging/issues/654)) ([a62a0d6](https://github.com/googleapis/python-logging/commit/a62a0d66cb8c07e617636e5ed54961f5e28164ae))
+
+## [3.2.4](https://github.com/googleapis/python-logging/compare/v3.2.3...v3.2.4) (2022-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#633](https://github.com/googleapis/python-logging/issues/633)) ([b4da4ce](https://github.com/googleapis/python-logging/commit/b4da4ceaaf757235c019e90022aaefcefd47150a))
+
+## [3.2.3](https://github.com/googleapis/python-logging/compare/v3.2.2...v3.2.3) (2022-09-30)
+
+
+### Bug Fixes
+
+* Mimic the pubsub test to clean up bigquery datasets ([#639](https://github.com/googleapis/python-logging/issues/639)) ([44deb1b](https://github.com/googleapis/python-logging/commit/44deb1bd63a1367528c57d6a732ba8a4e0dce318))
+* Nested json with structured log handler ([#636](https://github.com/googleapis/python-logging/issues/636)) ([b840435](https://github.com/googleapis/python-logging/commit/b8404351484cbec22a372a8c2b16dcb4bf4b756a))
+* Structured log handler drops reserved fields in json_fields ([#634](https://github.com/googleapis/python-logging/issues/634)) ([4ef38b3](https://github.com/googleapis/python-logging/commit/4ef38b3942f6750348916a28e995e2c1c169e071))
+
+## [3.2.2](https://github.com/googleapis/python-logging/compare/v3.2.1...v3.2.2) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#600](https://github.com/googleapis/python-logging/issues/600)) ([8495dac](https://github.com/googleapis/python-logging/commit/8495dac2f303dae74b0143d7c95189d0f2d180b8))
+* **deps:** require proto-plus >= 1.22.0 ([8495dac](https://github.com/googleapis/python-logging/commit/8495dac2f303dae74b0143d7c95189d0f2d180b8))
+
+## [3.2.1](https://github.com/googleapis/python-logging/compare/v3.2.0...v3.2.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#585](https://github.com/googleapis/python-logging/issues/585)) ([de35eab](https://github.com/googleapis/python-logging/commit/de35eabaa346b4ab8b8436841e4d82f83e10299a))
+
+## [3.2.0](https://github.com/googleapis/python-logging/compare/v3.1.2...v3.2.0) (2022-07-11)
+
+
+### Features
+
+* add audience parameter ([a2eed8c](https://github.com/googleapis/python-logging/commit/a2eed8c5de4f5ee995b6b7392c0e94dc72e56415))
+* Add support for library instrumentation ([#551](https://github.com/googleapis/python-logging/issues/551)) ([8ba0023](https://github.com/googleapis/python-logging/commit/8ba002386560f2b94756c8cd0e32a8b61cdeb78b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#575](https://github.com/googleapis/python-logging/issues/575)) ([a2eed8c](https://github.com/googleapis/python-logging/commit/a2eed8c5de4f5ee995b6b7392c0e94dc72e56415))
+* **deps:** require google-cloud-core >= 2.0.0 ([a2eed8c](https://github.com/googleapis/python-logging/commit/a2eed8c5de4f5ee995b6b7392c0e94dc72e56415))
+* require python 3.7+ ([#580](https://github.com/googleapis/python-logging/issues/580)) ([0b3eb52](https://github.com/googleapis/python-logging/commit/0b3eb5255f3294f9631deec3425a89cb06dc2c14))
+
+## [3.1.2](https://github.com/googleapis/python-logging/compare/v3.1.1...v3.1.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#564](https://github.com/googleapis/python-logging/issues/564)) ([cb0720c](https://github.com/googleapis/python-logging/commit/cb0720ceac84f4cebe3d79e4a01eea6728da8f05))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#562](https://github.com/googleapis/python-logging/issues/562)) ([3f16107](https://github.com/googleapis/python-logging/commit/3f16107ef02f85a405d2608862ffc0a73cdc8e48))
+* Update README image to absolute URL, fix PyPI rendering ([#561](https://github.com/googleapis/python-logging/issues/561)) ([76413b1](https://github.com/googleapis/python-logging/commit/76413b1c405019d8ed6044f0213f7983c38673cb))
+
+## [3.1.1](https://github.com/googleapis/python-logging/compare/v3.1.0...v3.1.1) (2022-05-23)
+
+
+### Documentation
+
+* Change button in README to .png file ([#554](https://github.com/googleapis/python-logging/issues/554)) ([e297747](https://github.com/googleapis/python-logging/commit/e2977477f97469671b8cbfc920f39743cf2f7c80))
+
+## [3.1.0](https://github.com/googleapis/python-logging/compare/v3.0.0...v3.1.0) (2022-05-08)
+
+
+### Features
+
+* KMS configuration in settings ([#489](https://github.com/googleapis/python-logging/issues/489)) ([6699f8c](https://github.com/googleapis/python-logging/commit/6699f8c545d1a9904a945a9d789d7220da9433bf))
+* Update Logging API with latest changes ([6699f8c](https://github.com/googleapis/python-logging/commit/6699f8c545d1a9904a945a9d789d7220da9433bf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#494](https://github.com/googleapis/python-logging/issues/494)) ([ab14563](https://github.com/googleapis/python-logging/commit/ab145630ffbb25a88cc058569b9e425e62b32ced))
+* fix system test for mtls ([#485](https://github.com/googleapis/python-logging/issues/485)) ([96bb6f7](https://github.com/googleapis/python-logging/commit/96bb6f786c91656b52624fbbf52e036b1a908d53))
+* Reenable staleness bot ([#535](https://github.com/googleapis/python-logging/issues/535)) ([1595e42](https://github.com/googleapis/python-logging/commit/1595e4203faeb3d46b28a7d98f68761998e3aa26))
+* remove unnecessary detect_resource calls from CloudLoggingHandler ([#484](https://github.com/googleapis/python-logging/issues/484)) ([def7440](https://github.com/googleapis/python-logging/commit/def7440ac6964451f3202b5117e3060ec62045b0))
+* resolve DuplicateCredentialArgs error when using credentials_file ([265061e](https://github.com/googleapis/python-logging/commit/265061eae8396caaef3fdfeae80e0a120f9a5cda))
+
+
+### Dependencies
+
+* Pin jinja2 version to fix CI ([#522](https://github.com/googleapis/python-logging/issues/522)) ([383f2f0](https://github.com/googleapis/python-logging/commit/383f2f0062d3703dfc7e2c331562fb88327cdf38))
+
+
+### Documentation
+
+* add generated snippets ([6699f8c](https://github.com/googleapis/python-logging/commit/6699f8c545d1a9904a945a9d789d7220da9433bf))
+* Add link to interactive walkthrough ([#541](https://github.com/googleapis/python-logging/issues/541)) ([422a77d](https://github.com/googleapis/python-logging/commit/422a77d93655fba3406ecf397cf417ad37dd1ce1))
+
 ## [3.0.0](https://github.com/googleapis/python-logging/compare/v2.7.0...v3.0.0) (2022-01-27)
 
 
@@ -124,7 +241,7 @@
 * improve API compatibility for next release ([#292](https://www.github.com/googleapis/python-logging/issues/292)) ([1f9517d](https://www.github.com/googleapis/python-logging/commit/1f9517da7302e19198e598d452df58238d4e6306))
 * remove noisy logs ([#290](https://www.github.com/googleapis/python-logging/issues/290)) ([bdf8273](https://www.github.com/googleapis/python-logging/commit/bdf827358de5935f736ecd73ab10b2d861daf690))
 
-### [2.3.1](https://www.github.com/googleapis/python-logging/compare/v2.3.0...v2.3.1) (2021-03-24)
+## [2.3.1](https://www.github.com/googleapis/python-logging/compare/v2.3.0...v2.3.1) (2021-03-24)
 
 
 ### Bug Fixes
@@ -164,7 +281,7 @@
 * django content length extraction bug ([#160](https://www.github.com/googleapis/python-logging/issues/160)) ([93eeaef](https://www.github.com/googleapis/python-logging/commit/93eeaef1cce286aa8aa830d2369212b912d184b6))
 * fix sphinx identifiers ([a9ff2b7](https://www.github.com/googleapis/python-logging/commit/a9ff2b7984a54542963fc8d52864365ef1562f57))
 
-### [2.1.1](https://www.github.com/googleapis/python-logging/compare/v2.1.0...v2.1.1) (2021-01-14)
+## [2.1.1](https://www.github.com/googleapis/python-logging/compare/v2.1.0...v2.1.1) (2021-01-14)
 
 
 ### Bug Fixes
@@ -189,7 +306,7 @@
 
 * fix usage guide ([#140](https://www.github.com/googleapis/python-logging/issues/140)) ([1ca3981](https://www.github.com/googleapis/python-logging/commit/1ca398103fdfefb5576d6ef2ba20cfa4bd4ab252))
 
-### [2.0.2](https://www.github.com/googleapis/python-logging/compare/v2.0.1...v2.0.2) (2020-12-14)
+## [2.0.2](https://www.github.com/googleapis/python-logging/compare/v2.0.1...v2.0.2) (2020-12-14)
 
 
 ### Bug Fixes
@@ -198,7 +315,7 @@
 * remove client recv msg limit fix: add enums to `types/__init__.py` ([#131](https://www.github.com/googleapis/python-logging/issues/131)) ([6349b89](https://www.github.com/googleapis/python-logging/commit/6349b899811cbb16f5548df0b77564b46666c4e7))
 * Remove keyword only argument for RequestsMiddleware ([#113](https://www.github.com/googleapis/python-logging/issues/113)) ([e704f28](https://www.github.com/googleapis/python-logging/commit/e704f287a40db38d0da42fa5e21e7a9ef73922ec))
 
-### [2.0.1](https://www.github.com/googleapis/python-logging/compare/v2.0.0...v2.0.1) (2020-12-02)
+## [2.0.1](https://www.github.com/googleapis/python-logging/compare/v2.0.0...v2.0.1) (2020-12-02)
 
 
 ### Bug Fixes
@@ -239,7 +356,7 @@
 
 * update docs ([#77](https://www.github.com/googleapis/python-logging/issues/77)) ([bdd9c44](https://www.github.com/googleapis/python-logging/commit/bdd9c440f29d1fcd6fb9545d8465c63efa6c0cea))
 
-### [1.15.1](https://www.github.com/googleapis/python-logging/compare/v1.15.0...v1.15.1) (2020-07-01)
+## [1.15.1](https://www.github.com/googleapis/python-logging/compare/v1.15.0...v1.15.1) (2020-07-01)
 
 
 ### Documentation

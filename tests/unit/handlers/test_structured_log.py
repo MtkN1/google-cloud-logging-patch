@@ -46,6 +46,15 @@ class TestStructuredLogHandler(unittest.TestCase):
         handler = self._make_one(project_id="foo")
         self.assertEqual(handler.project_id, "foo")
 
+    def test_ctor_w_encoder(self):
+        import json
+
+        class CustomJSONEncoder(json.JSONEncoder):
+            pass
+
+        handler = self._make_one(json_encoder_cls=CustomJSONEncoder)
+        self.assertEqual(handler._json_encoder_cls, CustomJSONEncoder)
+
     def test_format(self):
         import logging
         import json
@@ -206,6 +215,99 @@ class TestStructuredLogHandler(unittest.TestCase):
         result = handler.format(record)
         self.assertIn(expected_result, result)
         self.assertIn("message", result)
+
+    def test_format_with_custom_json_encoder(self):
+        import json
+        import logging
+
+        from pathlib import Path
+        from typing import Any
+
+        class CustomJSONEncoder(json.JSONEncoder):
+            def default(self, obj: Any) -> Any:
+                if isinstance(obj, Path):
+                    return str(obj)
+                return json.JSONEncoder.default(self, obj)
+
+        handler = self._make_one(json_encoder_cls=CustomJSONEncoder)
+
+        message = "hello world"
+        json_fields = {"path": Path("/path")}
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            message,
+            None,
+            None,
+        )
+        setattr(record, "json_fields", json_fields)
+        expected_payload = {
+            "message": message,
+            "severity": "INFO",
+            "logging.googleapis.com/trace": "",
+            "logging.googleapis.com/spanId": "",
+            "logging.googleapis.com/trace_sampled": False,
+            "logging.googleapis.com/sourceLocation": {},
+            "httpRequest": {},
+            "logging.googleapis.com/labels": {},
+            "path": "/path",
+        }
+        handler.filter(record)
+
+        result = json.loads(handler.format(record))
+
+        self.assertEqual(set(expected_payload.keys()), set(result.keys()))
+        self.assertEqual(result["path"], "/path")
+
+    def test_format_with_reserved_json_field(self):
+        # drop json_field data with reserved names
+        # related issue: https://github.com/googleapis/python-logging/issues/543
+        import logging
+        import json
+
+        handler = self._make_one()
+        message = "hello world"
+        extra = "still here"
+        json_fields = {
+            "message": "override?",
+            "severity": "error",
+            "logging.googleapis.com/trace_sampled": True,
+            "time": "none",
+            "extra": extra,
+            "SEVERITY": "error",
+        }
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            message,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        expected_payload = {
+            "message": message,
+            "severity": "INFO",
+            "SEVERITY": "error",
+            "logging.googleapis.com/trace": "",
+            "logging.googleapis.com/spanId": "",
+            "logging.googleapis.com/trace_sampled": False,
+            "logging.googleapis.com/sourceLocation": {},
+            "httpRequest": {},
+            "logging.googleapis.com/labels": {},
+            "extra": extra,
+        }
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+        self.assertEqual(set(expected_payload.keys()), set(result.keys()))
+        for (key, value) in expected_payload.items():
+            self.assertEqual(
+                value, result[key], f"expected_payload[{key}] != result[{key}]"
+            )
 
     def test_dict(self):
         """
@@ -438,3 +540,129 @@ class TestStructuredLogHandler(unittest.TestCase):
         self.assertEqual(result["message"], expected_result)
         self.assertEqual(result["hello"], "world")
         self.assertEqual(result["number"], 12)
+
+    def test_format_with_nested_json(self):
+        """
+        JSON can contain nested dictionaries of data
+        """
+        import logging
+        import json
+
+        handler = self._make_one()
+        json_fields = {"outer": {"inner": {"hello": "world"}}}
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+        self.assertEqual(result["outer"], json_fields["outer"])
+
+    def test_json_fields_input_unmodified(self):
+        # Related issue: https://github.com/googleapis/python-logging/issues/652
+        import logging
+
+        handler = self._make_one()
+        message = "hello world"
+        json_fields = {
+            "hello": "world",
+        }
+        json_fields_orig = json_fields.copy()
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            message,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        handler.filter(record)
+        handler.format(record)
+        # ensure json_fields has no side-effects
+        self.assertEqual(set(json_fields.keys()), set(json_fields_orig.keys()))
+        for (key, value) in json_fields_orig.items():
+            self.assertEqual(
+                value, json_fields[key], f"expected_payload[{key}] != result[{key}]"
+            )
+
+    def test_emits_instrumentation_info(self):
+        import logging
+        import mock
+        import google.cloud.logging_v2
+
+        handler = self._make_one()
+        logname = "loggername"
+        message = "Hello world!"
+
+        record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
+
+        with mock.patch.object(handler, "emit_instrumentation_info") as emit_info:
+
+            def side_effect():
+                google.cloud.logging_v2._instrumentation_emitted = True
+
+            emit_info.side_effect = side_effect
+            google.cloud.logging_v2._instrumentation_emitted = False
+            handler.emit(record)
+            handler.emit(record)
+
+            # emit_instrumentation_info should be called once
+            emit_info.assert_called_once()
+
+    def test_valid_instrumentation_info(self):
+        import logging
+        import mock
+        import json
+
+        with mock.patch.object(logging, "info") as mock_log:
+            handler = self._make_one()
+            handler.emit_instrumentation_info()
+            mock_log.assert_called_once()
+            # ensure instrumentaiton payload is formatted as expected
+            called_payload = mock_log.call_args.args[0]
+            self.assertEqual(len(called_payload.keys()), 1)
+            self.assertIn("logging.googleapis.com/diagnostic", called_payload.keys())
+            inst_source_dict = called_payload["logging.googleapis.com/diagnostic"]
+            self.assertEqual(len(inst_source_dict.keys()), 1)
+            self.assertIn("instrumentation_source", inst_source_dict.keys())
+            source_list = inst_source_dict["instrumentation_source"]
+            self.assertEqual(
+                len(source_list), 1, "expected single instrumentation source"
+            )
+            for source_dict in source_list:
+                self.assertEqual(
+                    len(source_dict.keys()),
+                    2,
+                    f"expected two keys in payload: {source_dict.keys()}",
+                )
+                self.assertIn("name", source_dict.keys())
+                self.assertIn("version", source_dict.keys())
+                self.assertEqual(source_dict["name"], "python")
+            # ensure it is parsed properly by handler
+            record = logging.LogRecord(
+                None,
+                logging.INFO,
+                None,
+                None,
+                called_payload,
+                None,
+                None,
+            )
+            record.created = None
+            handler.filter(record)
+            result = json.loads(handler.format(record))
+            self.assertEqual(
+                result["logging.googleapis.com/diagnostic"],
+                inst_source_dict,
+                "instrumentation payload not logged properly",
+            )

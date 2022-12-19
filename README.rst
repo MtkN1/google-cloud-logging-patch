@@ -34,6 +34,13 @@ In order to use this library, you first need to go through the following steps:
 .. _Enable the Cloud Logging API.:  https://cloud.google.com/logging
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
+For an interactive walkthrough on how to use this library in a python application, click the Guide Me button below:
+
+|guide|
+
+.. |guide| image:: https://raw.githubusercontent.com/googleapis/python-logging/main/_static/guide-me.png
+   :target: https://console.cloud.google.com/?walkthrough_id=logging__logging-python
+
 Installation
 ~~~~~~~~~~~~
 
@@ -50,11 +57,12 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7. The last version of the library compatible with Python 2.7 is `google-cloud-logging==1.15.1`.
+Python == 3.6. The last version of the library compatible with Python 3.6 is `google-cloud-logging==3.1.2`.
 
 
 Mac/Linux

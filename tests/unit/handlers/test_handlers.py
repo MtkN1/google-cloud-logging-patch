@@ -573,6 +573,47 @@ class TestCloudLoggingHandler(unittest.TestCase):
             ),
         )
 
+    def test_format_with_nested_json(self):
+        """
+        JSON can contain nested dictionaries of data
+        """
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+        import logging
+
+        client = _Client(self.PROJECT)
+        handler = self._make_one(
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
+        )
+        json_fields = {"outer": {"inner": {"hello": "world"}}}
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        handler.handle(record)
+        self.assertEqual(
+            handler.transport.send_called_with,
+            (
+                record,
+                json_fields,
+                _GLOBAL_RESOURCE,
+                None,
+                None,
+                None,
+                False,
+                None,
+                None,
+            ),
+        )
+
     def test_emit_with_encoded_json(self):
         """
         Handler should parse json encoded as a string
@@ -804,6 +845,24 @@ class TestFormatAndParseMessage(unittest.TestCase):
         result = _format_and_parse_message(record, handler)
         self.assertEqual(result["key_m"], message["key_m"])
         self.assertEqual(result["key_j"], json_fields["key_j"])
+
+    def test_json_fields_input_unmodified(self):
+        # Related issue: https://github.com/googleapis/python-logging/issues/652
+        from google.cloud.logging_v2.handlers.handlers import _format_and_parse_message
+
+        message = "hello world"
+        json_fields = {"hello": "world"}
+        json_fields_orig = json_fields.copy()
+        record = logging.LogRecord("logname", None, None, None, message, None, None)
+        setattr(record, "json_fields", json_fields)
+        handler = logging.StreamHandler()
+        _format_and_parse_message(record, handler)
+        # ensure json_fields has no side-effects
+        self.assertEqual(set(json_fields.keys()), set(json_fields_orig.keys()))
+        for (key, value) in json_fields_orig.items():
+            self.assertEqual(
+                value, json_fields[key], f"expected_payload[{key}] != result[{key}]"
+            )
 
 
 class TestSetupLogging(unittest.TestCase):

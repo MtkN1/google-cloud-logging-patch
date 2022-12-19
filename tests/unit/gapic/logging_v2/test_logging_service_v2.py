@@ -14,14 +14,20 @@
 # limitations under the License.
 #
 import os
-import mock
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    import mock
 
 import grpc
 from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import client_options
@@ -233,6 +239,7 @@ def test_logging_service_v2_client_client_options(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -250,6 +257,7 @@ def test_logging_service_v2_client_client_options(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -267,6 +275,7 @@ def test_logging_service_v2_client_client_options(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -296,6 +305,25 @@ def test_logging_service_v2_client_client_options(
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
+        )
+    # Check the case api_endpoint is provided
+    options = client_options.ClientOptions(
+        api_audience="https://language.googleapis.com"
+    )
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience="https://language.googleapis.com",
         )
 
 
@@ -373,6 +401,7 @@ def test_logging_service_v2_client_mtls_env_auto(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -407,6 +436,7 @@ def test_logging_service_v2_client_mtls_env_auto(
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
+                        api_audience=None,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -429,6 +459,7 @@ def test_logging_service_v2_client_mtls_env_auto(
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
+                    api_audience=None,
                 )
 
 
@@ -543,6 +574,7 @@ def test_logging_service_v2_client_client_options_scopes(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -581,6 +613,7 @@ def test_logging_service_v2_client_client_options_credentials_file(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -601,6 +634,7 @@ def test_logging_service_v2_client_client_options_from_dict():
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -639,6 +673,7 @@ def test_logging_service_v2_client_create_channel_credentials_file(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # test that the credentials from file are saved and used as the credentials.
@@ -766,7 +801,7 @@ def test_delete_log_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging.DeleteLogRequest()
 
-    request.log_name = "log_name/value"
+    request.log_name = "log_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_log), "__call__") as call:
@@ -782,7 +817,7 @@ def test_delete_log_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "log_name=log_name/value",
+        "log_name=log_name_value",
     ) in kw["metadata"]
 
 
@@ -796,7 +831,7 @@ async def test_delete_log_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging.DeleteLogRequest()
 
-    request.log_name = "log_name/value"
+    request.log_name = "log_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_log), "__call__") as call:
@@ -812,7 +847,7 @@ async def test_delete_log_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "log_name=log_name/value",
+        "log_name=log_name_value",
     ) in kw["metadata"]
 
 
@@ -1000,7 +1035,7 @@ def test_write_log_entries_flattened():
         # using the keyword arguments to the method.
         client.write_log_entries(
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1013,7 +1048,7 @@ def test_write_log_entries_flattened():
         mock_val = "log_name_value"
         assert arg == mock_val
         arg = args[0].resource
-        mock_val = monitored_resource_pb2.MonitoredResource(type="type__value")
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type_value")
         assert arg == mock_val
         arg = args[0].labels
         mock_val = {"key_value": "value_value"}
@@ -1034,7 +1069,7 @@ def test_write_log_entries_flattened_error():
         client.write_log_entries(
             logging.WriteLogEntriesRequest(),
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1060,7 +1095,7 @@ async def test_write_log_entries_flattened_async():
         # using the keyword arguments to the method.
         response = await client.write_log_entries(
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1073,7 +1108,7 @@ async def test_write_log_entries_flattened_async():
         mock_val = "log_name_value"
         assert arg == mock_val
         arg = args[0].resource
-        mock_val = monitored_resource_pb2.MonitoredResource(type="type__value")
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type_value")
         assert arg == mock_val
         arg = args[0].labels
         mock_val = {"key_value": "value_value"}
@@ -1095,7 +1130,7 @@ async def test_write_log_entries_flattened_error_async():
         await client.write_log_entries(
             logging.WriteLogEntriesRequest(),
             log_name="log_name_value",
-            resource=monitored_resource_pb2.MonitoredResource(type="type__value"),
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
             labels={"key_value": "value_value"},
             entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
@@ -1334,7 +1369,7 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, log_entry.LogEntry) for i in results)
 
@@ -1617,7 +1652,7 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, monitored_resource_pb2.MonitoredResourceDescriptor)
@@ -1874,7 +1909,7 @@ def test_list_logs_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging.ListLogsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -1890,7 +1925,7 @@ def test_list_logs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1904,7 +1939,7 @@ async def test_list_logs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging.ListLogsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -1922,7 +1957,7 @@ async def test_list_logs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2053,7 +2088,7 @@ def test_list_logs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
 
@@ -2508,6 +2543,28 @@ def test_logging_service_v2_transport_auth_adc(transport_class):
             ),
             quota_project_id="octopus",
         )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.LoggingServiceV2GrpcTransport,
+        transports.LoggingServiceV2GrpcAsyncIOTransport,
+    ],
+)
+def test_logging_service_v2_transport_auth_gdch_credentials(transport_class):
+    host = "https://language.com"
+    api_audience_tests = [None, "https://language2.com"]
+    api_audience_expect = [host, "https://language2.com"]
+    for t, e in zip(api_audience_tests, api_audience_expect):
+        with mock.patch.object(google.auth, "default", autospec=True) as adc:
+            gdch_mock = mock.MagicMock()
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
+                return_value=gdch_mock
+            )
+            adc.return_value = (gdch_mock, None)
+            transport_class(host=host, api_audience=t)
+            gdch_mock.with_gdch_audience.assert_called_once_with(e)
 
 
 @pytest.mark.parametrize(
@@ -2981,4 +3038,5 @@ def test_api_key_credentials(client_class, transport_class):
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )

@@ -16,10 +16,13 @@
 """
 import collections
 import json
+import logging
 import logging.handlers
 
 from google.cloud.logging_v2.handlers.handlers import CloudLoggingFilter
 from google.cloud.logging_v2.handlers.handlers import _format_and_parse_message
+import google.cloud.logging_v2
+from google.cloud.logging_v2._instrumentation import _create_diagnostic_entry
 
 GCP_FORMAT = (
     "{%(_payload_str)s"
@@ -33,18 +36,41 @@ GCP_FORMAT = (
     "}"
 )
 
+# reserved fields taken from Structured Logging documentation:
+# https://cloud.google.com/logging/docs/structured-logging
+GCP_STRUCTURED_LOGGING_FIELDS = frozenset(
+    {
+        "severity",
+        "httpRequest",
+        "time",
+        "timestamp",
+        "timestampSeconds",
+        "timestampNanos",
+        "logging.googleapis.com/insertId",
+        "logging.googleapis.com/labels",
+        "logging.googleapis.com/operation",
+        "logging.googleapis.com/sourceLocation",
+        "logging.googleapis.com/spanId",
+        "logging.googleapis.com/trace",
+        "logging.googleapis.com/trace_sampled",
+    }
+)
+
 
 class StructuredLogHandler(logging.StreamHandler):
     """Handler to format logs into the Cloud Logging structured log format,
     and write them to standard output
     """
 
-    def __init__(self, *, labels=None, stream=None, project_id=None):
+    def __init__(
+        self, *, labels=None, stream=None, project_id=None, json_encoder_cls=None
+    ):
         """
         Args:
             labels (Optional[dict]): Additional labels to attach to logs.
             stream (Optional[IO]): Stream to be used by the handler.
             project (Optional[str]): Project Id associated with the logs.
+            json_encoder_cls (Optional[Type[JSONEncoder]]): Custom JSON encoder. Defaults to json.JSONEncoder
         """
         super(StructuredLogHandler, self).__init__(stream=stream)
         self.project_id = project_id
@@ -55,6 +81,8 @@ class StructuredLogHandler(logging.StreamHandler):
 
         # make logs appear in GCP structured logging format
         self._gcp_formatter = logging.Formatter(GCP_FORMAT)
+
+        self._json_encoder_cls = json_encoder_cls or json.JSONEncoder
 
     def format(self, record):
         """Format the message into structured log JSON.
@@ -67,13 +95,23 @@ class StructuredLogHandler(logging.StreamHandler):
         message = _format_and_parse_message(record, super(StructuredLogHandler, self))
 
         if isinstance(message, collections.abc.Mapping):
+            # remove any special fields
+            for key in list(message.keys()):
+                if key in GCP_STRUCTURED_LOGGING_FIELDS:
+                    del message[key]
             # if input is a dictionary, encode it as a json string
-            encoded_msg = json.dumps(message, ensure_ascii=False)
-            # strip out open and close parentheses
-            payload = encoded_msg.lstrip("{").rstrip("}") + ","
+            encoded_msg = json.dumps(
+                message, ensure_ascii=False, cls=self._json_encoder_cls
+            )
+            # all json.dumps strings should start and end with parentheses
+            # strip them out to embed these fields in the larger JSON payload
+            if len(encoded_msg) > 2:
+                payload = encoded_msg[1:-1] + ","
         elif message:
             # properly break any formatting in string to make it json safe
-            encoded_message = json.dumps(message, ensure_ascii=False)
+            encoded_message = json.dumps(
+                message, ensure_ascii=False, cls=self._json_encoder_cls
+            )
             payload = '"message": {},'.format(encoded_message)
 
         record._payload_str = payload or ""
@@ -84,3 +122,13 @@ class StructuredLogHandler(logging.StreamHandler):
         # convert to GCP structred logging format
         gcp_payload = self._gcp_formatter.format(record)
         return gcp_payload
+
+    def emit(self, record):
+        if google.cloud.logging_v2._instrumentation_emitted is False:
+            self.emit_instrumentation_info()
+        super().emit(record)
+
+    def emit_instrumentation_info(self):
+        google.cloud.logging_v2._instrumentation_emitted = True
+        diagnostic_object = _create_diagnostic_entry()
+        logging.info(diagnostic_object.payload)

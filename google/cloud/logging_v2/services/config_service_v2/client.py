@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.logging_v2 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -61,7 +73,7 @@ class ConfigServiceV2ClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ConfigServiceV2Transport]:
         """Returns an appropriate transport class.
 
@@ -424,8 +436,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConfigServiceV2Transport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ConfigServiceV2Transport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the config service v2 client.
@@ -439,7 +451,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             transport (Union[str, ConfigServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -469,6 +481,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -516,21 +529,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def list_buckets(
         self,
-        request: Union[logging_config.ListBucketsRequest, dict] = None,
+        request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBucketsPager:
         r"""Lists log buckets.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_buckets():
@@ -637,16 +658,23 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def get_bucket(
         self,
-        request: Union[logging_config.GetBucketRequest, dict] = None,
+        request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogBucket:
         r"""Gets a log bucket.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_get_bucket():
@@ -710,10 +738,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def create_bucket(
         self,
-        request: Union[logging_config.CreateBucketRequest, dict] = None,
+        request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogBucket:
         r"""Creates a log bucket that can be used to store log
@@ -722,6 +750,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_create_bucket():
@@ -786,10 +821,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def update_bucket(
         self,
-        request: Union[logging_config.UpdateBucketRequest, dict] = None,
+        request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogBucket:
         r"""Updates a log bucket. This method replaces the following fields
@@ -807,6 +842,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_update_bucket():
@@ -870,10 +912,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def delete_bucket(
         self,
-        request: Union[logging_config.DeleteBucketRequest, dict] = None,
+        request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a log bucket.
@@ -885,6 +927,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_delete_bucket():
@@ -936,10 +985,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def undelete_bucket(
         self,
-        request: Union[logging_config.UndeleteBucketRequest, dict] = None,
+        request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Undeletes a log bucket. A bucket that has been
@@ -948,6 +997,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_undelete_bucket():
@@ -999,17 +1055,24 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def list_views(
         self,
-        request: Union[logging_config.ListViewsRequest, dict] = None,
+        request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListViewsPager:
         r"""Lists views on a log bucket.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_views():
@@ -1108,16 +1171,23 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def get_view(
         self,
-        request: Union[logging_config.GetViewRequest, dict] = None,
+        request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogView:
         r"""Gets a view on a log bucket..
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_get_view():
@@ -1181,10 +1251,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def create_view(
         self,
-        request: Union[logging_config.CreateViewRequest, dict] = None,
+        request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogView:
         r"""Creates a view over log entries in a log bucket. A
@@ -1192,6 +1262,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_create_view():
@@ -1256,10 +1333,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def update_view(
         self,
-        request: Union[logging_config.UpdateViewRequest, dict] = None,
+        request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogView:
         r"""Updates a view on a log bucket. This method replaces the
@@ -1270,6 +1347,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_update_view():
@@ -1333,10 +1417,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def delete_view(
         self,
-        request: Union[logging_config.DeleteViewRequest, dict] = None,
+        request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
@@ -1346,6 +1430,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_delete_view():
@@ -1397,17 +1488,24 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def list_sinks(
         self,
-        request: Union[logging_config.ListSinksRequest, dict] = None,
+        request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSinksPager:
         r"""Lists sinks.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_sinks():
@@ -1510,17 +1608,24 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def get_sink(
         self,
-        request: Union[logging_config.GetSinkRequest, dict] = None,
+        request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
         *,
-        sink_name: str = None,
+        sink_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogSink:
         r"""Gets a sink.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_get_sink():
@@ -1623,12 +1728,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def create_sink(
         self,
-        request: Union[logging_config.CreateSinkRequest, dict] = None,
+        request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
         *,
-        parent: str = None,
-        sink: logging_config.LogSink = None,
+        parent: Optional[str] = None,
+        sink: Optional[logging_config.LogSink] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogSink:
         r"""Creates a sink that exports specified log entries to a
@@ -1639,6 +1744,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_create_sink():
@@ -1753,13 +1865,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def update_sink(
         self,
-        request: Union[logging_config.UpdateSinkRequest, dict] = None,
+        request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
         *,
-        sink_name: str = None,
-        sink: logging_config.LogSink = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        sink_name: Optional[str] = None,
+        sink: Optional[logging_config.LogSink] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogSink:
         r"""Updates a sink. This method replaces the following fields in the
@@ -1771,6 +1883,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_update_sink():
@@ -1912,11 +2031,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def delete_sink(
         self,
-        request: Union[logging_config.DeleteSinkRequest, dict] = None,
+        request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
         *,
-        sink_name: str = None,
+        sink_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
@@ -1924,6 +2043,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_delete_sink():
@@ -2008,11 +2134,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def list_exclusions(
         self,
-        request: Union[logging_config.ListExclusionsRequest, dict] = None,
+        request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
@@ -2020,6 +2146,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_exclusions():
@@ -2122,17 +2255,24 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def get_exclusion(
         self,
-        request: Union[logging_config.GetExclusionRequest, dict] = None,
+        request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion in the \_Default sink.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_get_exclusion():
@@ -2231,12 +2371,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def create_exclusion(
         self,
-        request: Union[logging_config.CreateExclusionRequest, dict] = None,
+        request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
         *,
-        parent: str = None,
-        exclusion: logging_config.LogExclusion = None,
+        parent: Optional[str] = None,
+        exclusion: Optional[logging_config.LogExclusion] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogExclusion:
         r"""Creates a new exclusion in the \_Default sink in a specified
@@ -2245,6 +2385,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_create_exclusion():
@@ -2360,13 +2507,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def update_exclusion(
         self,
-        request: Union[logging_config.UpdateExclusionRequest, dict] = None,
+        request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
         *,
-        name: str = None,
-        exclusion: logging_config.LogExclusion = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        exclusion: Optional[logging_config.LogExclusion] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing exclusion in the
@@ -2374,6 +2521,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_update_exclusion():
@@ -2503,17 +2657,24 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def delete_exclusion(
         self,
-        request: Union[logging_config.DeleteExclusionRequest, dict] = None,
+        request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an exclusion in the \_Default sink.
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_delete_exclusion():
@@ -2596,10 +2757,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def get_cmek_settings(
         self,
-        request: Union[logging_config.GetCmekSettingsRequest, dict] = None,
+        request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.CmekSettings:
         r"""Gets the Logging CMEK settings for the given resource.
@@ -2615,6 +2776,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_get_cmek_settings():
@@ -2692,10 +2860,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def update_cmek_settings(
         self,
-        request: Union[logging_config.UpdateCmekSettingsRequest, dict] = None,
+        request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.CmekSettings:
         r"""Updates the Log Router CMEK settings for the given resource.
@@ -2716,6 +2884,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_update_cmek_settings():
@@ -2793,11 +2968,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def get_settings(
         self,
-        request: Union[logging_config.GetSettingsRequest, dict] = None,
+        request: Optional[Union[logging_config.GetSettingsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.Settings:
         r"""Gets the Log Router settings for the given resource.
@@ -2814,6 +2989,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_get_settings():
@@ -2919,12 +3101,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def update_settings(
         self,
-        request: Union[logging_config.UpdateSettingsRequest, dict] = None,
+        request: Optional[Union[logging_config.UpdateSettingsRequest, dict]] = None,
         *,
-        settings: logging_config.Settings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        settings: Optional[logging_config.Settings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.Settings:
         r"""Updates the Log Router settings for the given resource.
@@ -2948,6 +3130,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_update_settings():
@@ -3055,10 +3244,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def copy_log_entries(
         self,
-        request: Union[logging_config.CopyLogEntriesRequest, dict] = None,
+        request: Optional[Union[logging_config.CopyLogEntriesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Copies a set of log entries from a log bucket to a
@@ -3066,6 +3255,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_copy_log_entries():
@@ -3152,14 +3348,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-logging",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("ConfigServiceV2Client",)
